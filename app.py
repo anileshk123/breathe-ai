@@ -4,6 +4,14 @@ import requests
 app = Flask(__name__)
 @app.route('/', methods=['GET','POST']) #landing page
 def home():
+    if request.method == "POST":
+        age = int(request.form['age'])
+        gender = request.form['gender']
+        height = float(request.form['height'])
+        weight = float(request.form['weight'])
+        smoker = request.form['smoker']
+        print(age,gender,height,weight,smoker)
+
     return render_template("index.html")
 
 @app.route('/iwoediwdowiejdw', methods=['GET','POST']) #landing page
