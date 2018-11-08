@@ -1,5 +1,6 @@
 from flask import Flask ,render_template, redirect, url_for, session, request, logging
 import requests
+from sklearn.ensemble import RandomForestRegressor
 
 app = Flask(__name__)
 @app.route('/', methods=['GET','POST']) #landing page
@@ -7,11 +8,24 @@ def home():
     if request.method == "POST":
         age = int(request.form['age'])
         gender = request.form['gender']
+        if gender.lower() == "male":
+            gender = 0
+        else:
+            gender = 1
         height = float(request.form['height'])
+        height = height/100.0
         weight = float(request.form['weight'])
         smoker = request.form['smoker']
-        print(age,gender,height,weight,smoker)
-
+        if smoker.lower() == "smoker":
+            smoker = 1
+        else:
+            smoker = 0
+        
+        import pickle
+        filename = 'finalized_model.sav'
+        loaded_model = pickle.load(open(filename, 'rb'))
+        pfr = loaded_model.predict([[age,gender,height,weight,smoker]])
+        return render_template("result.html",pfr=pfr)
     return render_template("index.html")
 
 @app.route('/iwoediwdowiejdw', methods=['GET','POST']) #landing page
