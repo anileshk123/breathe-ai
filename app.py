@@ -26,13 +26,16 @@ def home():
         loaded_model = pickle.load(open(filename, 'rb'))
         pfr = loaded_model.predict([[age,gender,height,weight,smoker]])
         pfr = pfr[0]
+        pfr = "%0.2f" % pfr
 
         if gender == 0:
             pefr=41.05-(3.5*age)+(333.7*height) #males
         else:
             pefr=-213.8-(1.3*age)+(430.3*height) #females
 
-        difference = abs(pfr-pefr)
+        pefr = "%0.2f" % pefr
+        difference = abs(float(pfr)-float(pefr))
+        difference = "%0.2f" % difference
         return render_template("result.html",pfr=pfr,calcpef=pefr,diff = difference)
     return render_template("index.html")
 
