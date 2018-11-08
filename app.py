@@ -25,7 +25,15 @@ def home():
         filename = 'finalized_model.sav'
         loaded_model = pickle.load(open(filename, 'rb'))
         pfr = loaded_model.predict([[age,gender,height,weight,smoker]])
-        return render_template("result.html",pfr=pfr)
+        pfr = pfr[0]
+
+        if gender == 0:
+            pefr=41.05-(3.5*age)+(333.7*height) #males
+        else:
+            pefr=-213.8-(1.3*age)+(430.3*height) #females
+
+        difference = abs(pfr-pefr)
+        return render_template("result.html",pfr=pfr,calcpef=pefr,diff = difference)
     return render_template("index.html")
 
 @app.route('/iwoediwdowiejdw', methods=['GET','POST']) #landing page
